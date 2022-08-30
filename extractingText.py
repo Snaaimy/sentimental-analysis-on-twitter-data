@@ -9,17 +9,19 @@ import urllib.request, os
 
 start = time.time()
 
+# check for the images folder
 def check_folder_exists(folder_name):
   if not os.path.isdir(folder_name):
     os.makedirs(folder_name)
 
+# extracting emojis
 def extract_emojis(s):
     all_emojis = ''.join(c for c in s if c in emoji.distinct_emoji_list(s))
     emojis_meaning = demoji.findall(all_emojis)
 
     return emojis_meaning
 
-
+# extracting images
 def extract_images(url, file_name):
     try:
         folder_name = str('/home/shakir/Documents/R-Sir/sentimental-analysis-on-twitter-data/images')
@@ -35,9 +37,6 @@ def extract_images(url, file_name):
 all_texts = []
 all_emojis = []
 
-
-# counter = 0
-# emcounter = 0
 
 files = glob.glob('/home/shakir/Desktop/tweets/tweet/*.json', recursive=True)
 
