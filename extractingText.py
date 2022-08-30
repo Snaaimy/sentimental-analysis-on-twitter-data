@@ -5,10 +5,13 @@ import emoji
 import demoji
 import numpy as np
 import time
-import urllib.request
+import urllib.request, os
 
 start = time.time()
 
+def check_folder_exists(folder_name):
+  if not os.path.isdir(folder_name):
+    os.makedirs(folder_name)
 
 def extract_emojis(s):
     all_emojis = ''.join(c for c in s if c in emoji.distinct_emoji_list(s))
@@ -19,8 +22,11 @@ def extract_emojis(s):
 
 def extract_images(url, file_name):
     try:
-        urllib.request.urlretrieve(url, file_name+'.jpg')
-        return True
+        folder_name = str('/home/shakir/Documents/R-Sir/sentimental-analysis-on-twitter-data/images')
+        check_folder_exists(folder_name)
+        file_name = file_name + '.jpg'
+        full_filename = os.path.join(folder_name, file_name)
+        urllib.request.urlretrieve(url, full_filename)
     except BaseException as err:
         print(err)
         return False
@@ -39,6 +45,7 @@ files = glob.glob('/home/shakir/Desktop/tweets/tweet/*.json', recursive=True)
 print('Collecting data...')
 i = 0
 while i < len(files):
+    with open(files[i], 'r') as f:
         json_file1 = json.load(f)
         user_emojis = []
         user_texts = []
